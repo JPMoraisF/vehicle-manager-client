@@ -1,0 +1,68 @@
+<div class="mat-card">
+  <h1>Add new vehicle</h1>
+  <form (ngSubmit)="onSubmit()" #vehicleForm="ngForm">
+    <mat-form-field>
+      <mat-label>Make</mat-label>
+      <input type="text" id="make" name="make" [(ngModel)]="newVehicle.make" required matInput >
+      <!-- <mat-error *ngIf="vehicleForm.controls..invalid">Please enter make.</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Model</mat-label>
+      <input type="text" id="modelName" name="modelName" [(ngModel)]="newVehicle.modelName" required matInput >
+      <!-- <mat-error *ngIf="vehicleForm.controls.modelName.invalid">Please enter a model.</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Model year</mat-label>
+      <input type="number" id="modelYear" name="modelYear" [(ngModel)]="newVehicle.modelYear" required matInput >
+      <!-- <mat-error *ngIf="vehicleForm.controls.modelYear.invalid">Please enter a valid year.</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Kilometers driven</mat-label>
+      <input type="number" id="kilometersDriven" name="kilometersDriven" [(ngModel)]="newVehicle.kilometersDriven"  matInput >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>VIN</mat-label>
+      <input type="text" id="vin" name="vin" [(ngModel)]="newVehicle.vin" matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>License Plate</mat-label>
+      <input type="text" id="licensePlate" name="licensePlate" [(ngModel)]="newVehicle.licensePlate" required matInput >
+      <!-- <mat-error *ngIf="vehicleForm.controls.licensePlate.invalid">Please enter a license plate.</mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Color</mat-label>
+      <input type="text" id="color" name="color" [(ngModel)]="newVehicle.color" required matInput >
+      <!-- <mat-error *ngIf="vehicleForm.controls.color.invalid">Please enter a color.</mat-error> -->
+    </mat-form-field>
+    <div class="image-container">
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" #fileInput>
+    
+      <img 
+        *ngIf="newVehicle.image; else noImage" 
+        [src]="newVehicle.image" 
+        alt="Vehicle Image"
+        style="max-width: 30%; max-height: 700px;">
+        <ng-template #noImage>
+          <img src="../../../assets/noPicture.png" alt="No Picture" style="max-width: 30%; max-height: 700px;">
+        </ng-template>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="fileInput.click()" 
+        type="button">Select image</button>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Notes</mat-label>
+      <textarea matInput rows="4" name="notes" [(ngModel)]="newVehicle.notes" ></textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit">Add Vehicle</button>
+  </form>
+</div>

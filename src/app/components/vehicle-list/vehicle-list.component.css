@@ -1,0 +1,30 @@
+.vehicle-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.vehicle-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.vehicle-details {
+  flex: 1;
+}
+
+.vehicle-details h3 {
+  margin: 0;
+}
+
+mat-spinner {
+  margin: auto
+}
+
+.searchInput {
+  width: 100%
+}

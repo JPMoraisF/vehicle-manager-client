@@ -1,0 +1,28 @@
+<mat-form-field class="searchInput">
+  <input matInput (input)="applyFilter($event)" placeholder="Search...">
+</mat-form-field>
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<div *ngIf="!isLoading && !hasError && filteredVehicles.length > 0">
+  <div *ngFor="let vehicle of filteredVehicles" class="vehicle-item" (click)="redirectToDetails(vehicle)">
+
+    <img *ngIf="vehicle.image; else noImage" [src]="vehicle.image" alt="Vehicle Image"
+      style="max-width: 30%; max-height: 100px; margin-right: 20px;">
+    <ng-template #noImage>
+      <img src="../../../assets/noPicture.png" alt="No Picture"
+        style="max-width: 30%; max-height: 100px; margin-right: 20px;">
+    </ng-template>
+
+    <div class="vehicle-details">
+      <h3>{{ vehicle.modelName }}</h3>
+      <p>Year: {{ vehicle.modelYear }}</p>
+      <p>Date added: {{ vehicle.dateAdded | date }}</p>
+      <p>License plate: {{ vehicle.licensePlate }}</p>
+    </div>
+  </div>
+</div>
+<h1 style="text-align: center;" *ngIf="filteredVehicles.length == 0 && !isLoading && !hasError">
+  No vehicles to show <a href="/add-vehicle"><button mat-raised-button color="primary">Add one now</button></a>
+</h1>
+
+<h1 style="text-align: center;" *ngIf="hasError">Error fetching vehicles</h1>

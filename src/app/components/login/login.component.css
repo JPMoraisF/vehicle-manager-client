@@ -1,0 +1,23 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form button {
+  width: fit-content;
+  margin: auto;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+mat-spinner {
+  margin: auto
+}
+
+.main-div {
+  width: 40%;
+  margin: auto;
+}

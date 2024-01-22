@@ -1,0 +1,29 @@
+.modal-box {
+    padding: 5px;
+    margin: 4px
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-button {
+    width: fit-content;
+    align-self: flex-end;
+}
+
+.item-table {
+    margin-bottom: 20px;
+}
+
+.add-item-button {
+    width: fit-content;
+    margin: auto;
+}
+
+.item-table {
+    height: 300px; /* Defina o valor desejado, 80vh significa 80% da altura da viewport */
+    overflow-y: auto; /* Adiciona rolagem vertical quando necessário */
+  }
+  

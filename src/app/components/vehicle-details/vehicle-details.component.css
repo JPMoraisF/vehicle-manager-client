@@ -1,0 +1,46 @@
+.details-container {
+  display: flex;
+}
+
+.left-container {
+  width: 80%;
+  padding-right: 20px; /* Adicione espaço entre as duas seções */
+}
+
+.right-container {
+  width: 20%;
+}
+
+.form-container {
+  display: flex;
+}
+
+.form-field {
+  width: 100%
+}
+
+.info-container {
+  flex-direction: row;
+  padding: 20px;
+}
+
+.add-button {
+  margin: auto;
+  max-width: fit-content;
+  margin-top: 20px;
+}
+
+.vehicle-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+mat-card {
+  margin: 20px 0px;
+}
+
+.maintenance-list {
+  max-height: 400px;
+  overflow: auto;
+}

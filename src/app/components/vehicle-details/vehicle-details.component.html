@@ -1,0 +1,137 @@
+<!-- vehicle-details.component.html -->
+<div *ngIf="vehicleDetails" class="details-container">
+  <div class="left-container">
+    <mat-card>
+      <form (ngSubmit)="onSave()" #editForm="ngForm" class="form-container">
+        <div class="image-container">
+          <input type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" #fileInput>
+        
+          <img 
+            *ngIf="vehicleDetails.image; else noImage" 
+            [src]="vehicleDetails.image" 
+            alt="Vehicle Image"
+            style="max-width: 100%; max-height: 700px;">
+            <ng-template #noImage>
+              <img src="../../../assets/noPicture.png" alt="No Picture" style="max-width: 100%; max-height: 700px;">
+            </ng-template>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="fileInput.click()" 
+            type="button"
+            *ngIf="isEdit">Select image</button>
+        </div>
+
+        <div class="info-container">
+          <div class="vehicle-header">
+            <h2>{{ vehicleDetails.modelName }} - Details</h2>
+            <button mat-raised-button color="primary" type="button" (click)="toggleEdit()">{{!isEdit? 'Edit' :
+              "Cancel"}}</button>
+
+          </div>
+          <mat-form-field class="form-field">
+            <mat-label>Make</mat-label>
+            <input type="text" id="modelMake" name="modelMake" [(ngModel)]="vehicleDetails.make" matInput
+              [disabled]="!isEdit" required>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Model</mat-label>
+            <input [disabled]="!isEdit" type="text" id="modelName" name="modelName"
+              [(ngModel)]="vehicleDetails.modelName" matInput>
+          </mat-form-field>
+
+          <mat-form-field class="form-field" style="width: 40%">
+            <mat-label>Model year</mat-label>
+            <input [disabled]="!isEdit" type="number" id="modelYear" name="modelYear"
+              [(ngModel)]="vehicleDetails.modelYear" matInput>
+          </mat-form-field>
+
+          <mat-form-field class="form-field" style="width: 40%">
+            <mat-label>Kilometers</mat-label>
+            <input [disabled]="!isEdit" type="number" id="kilometersDriven" name="kilometersDriven" [(ngModel)]="vehicleDetails.kilometersDriven"
+              matInput>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>VIN</mat-label>
+            <input [disabled]="!isEdit" type="text" id="vin" name="vin" [(ngModel)]="vehicleDetails.vin" matInput
+              placeholder="VIN">
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>License Plate</mat-label>
+            <input [disabled]="!isEdit" type="text" id="licensePlate" name="licensePlate"
+              [(ngModel)]="vehicleDetails.licensePlate" matInput>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Notes</mat-label>
+            <input [disabled]="!isEdit" type="text" id="notes" name="notes" [(ngModel)]="vehicleDetails.notes" matInput>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="submit" *ngIf="isEdit"
+            [disabled]="!editForm.valid">Save</button>
+        </div>
+      </form>
+    </mat-card>
+    <mat-card>
+
+      <h1>Services</h1>
+      <div *ngIf="vehicleDetails.maintenanceList && vehicleDetails.maintenanceList.length > 0" class="maintenance-list">
+
+
+        <table mat-table [dataSource]="vehicleDetails.maintenanceList" class="mat-elevation-z8" >
+          <ng-container matColumnDef="maintenanceDate">
+            <th mat-header-cell *matHeaderCellDef >Service date</th>
+            <td mat-cell *matCellDef="let maintenance">{{ maintenance.maintenanceDate | date }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="kilometersDriven">
+            <th mat-header-cell *matHeaderCellDef >Kilometers driven</th>
+            <td mat-cell *matCellDef="let maintenance">{{ maintenance.kilometersDriven }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="notes">
+            <th mat-header-cell *matHeaderCellDef >Notes</th>
+            <td mat-cell *matCellDef="let maintenance">{{ maintenance.notes || 'N/A' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef >Service cost</th>
+            <td mat-cell *matCellDef="let maintenance">{{ maintenance.totalCost | currency }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="details">
+            <th mat-header-cell *matHeaderCellDef >Options</th>
+            <td mat-cell *matCellDef="let maintenance">
+              <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openMaintenanceDetailsDialog(maintenance.id)">Details</button>
+                <button mat-menu-item (click)="deleteMaintenance(maintenance)">Delete</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        
+      </div>
+      <p *ngIf="vehicleDetails.maintenanceList && vehicleDetails.maintenanceList.length == 0">No maintenances done on
+        this vehicle</p>
+      <button class="add-button" mat-raised-button color="primary" (click)="addMaintenance()">Add Maintenance</button>
+    </mat-card>
+  </div>
+
+  <div class="right-container ">
+    <h1 style="text-align: center;">Quick actions</h1>
+    <mat-card>
+      <button mat-button color="primary">Show driver</button>
+    </mat-card>
+    <mat-card>
+      <button mat-raised-button color="warn" (click)="openDeleteModal()">Delete vehicle</button>
+    </mat-card>
+  </div>
+</div>
