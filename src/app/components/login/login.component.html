@@ -39,6 +39,14 @@
         Username is required.
       </mat-error>
     </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Full Name:</mat-label>
+      <input [disabled]="isLoading" matInput type="text" id="name" name="name" [(ngModel)]="user.name" required>
+      <mat-error *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].dirty || registerForm.controls['name'].touched)">
+        Full name is required.
+      </mat-error>
+    </mat-form-field>
   
     <mat-form-field appearance="fill">
       <mat-label>Password:</mat-label>

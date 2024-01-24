@@ -43,7 +43,7 @@ export class AddVehicleComponent {
         this.router.navigate(['/my-vehicles/']);
       },
       (error) => {
-        console.error('Erro ao adicionar o veículo:', error);
+        console.error('Erro ao adicionar o veículo:', error.error);
         this.snackBar.open(`Erro ao adicionar veículo: ${error.error}` , '', {duration: 5000});
       }
     );

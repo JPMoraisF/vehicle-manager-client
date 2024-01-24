@@ -6,6 +6,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { AddMaintenanceComponent } from './components/add-maintenance/add-maintenance.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/guards/auth.guard';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 const routes: Routes = [
   { path: 'vehicle-details/:id', component: VehicleDetailsComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'add-vehicle', component: AddVehicleComponent, canActivate: [AuthGuard] },
   { path: 'add-maintenance', component: AddMaintenanceComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'user', component: UserDetailsComponent },
 ];
 
 @NgModule({

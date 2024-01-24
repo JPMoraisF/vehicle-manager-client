@@ -12,7 +12,7 @@
     [matMenuTriggerFor]="menu"
     style="cursor: pointer;">account_circle</mat-icon>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>Ver perfil</button>
+    <button mat-menu-item routerLink="/user">Profile</button>
     <button mat-menu-item (click)="logout()">Logout</button>
   </mat-menu>
 </mat-toolbar>
