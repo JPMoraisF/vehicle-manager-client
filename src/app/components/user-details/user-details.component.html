@@ -13,6 +13,9 @@
             <div class="user-info-item">
               <p><strong>Email:</strong> {{ user.email }}</p>
             </div>
+            <div class="user-info-item">
+              <p><strong>Unit of measure:</strong> {{ useMetric ? "Metric" : "Imperial" }}</p>
+            </div>
             <!-- <div class="user-info-item">
               <p><strong>Address:</strong> {{ user.address }}</p>
             </div>
@@ -23,9 +26,6 @@
               <p><strong>Driver License Category:</strong> {{ user.driverLicenseCategory }}</p>
             </div> -->
           </div>
-          <!-- <div class="user-picture">
-            <img [src]="user.profilePicture" alt="Profile Picture">
-          </div> -->
           <button mat-raised-button color="primary" (click)="startEditing()">Edit</button>
         </div>
   
@@ -38,8 +38,6 @@
             <mat-slide-toggle [(ngModel)]="useMetric" name="useMetric">Use metric units</mat-slide-toggle>
 
           </form>
-          <!-- Formulário de edição -->
-          <!-- Adicione campos de formulário editáveis aqui -->
           <button mat-raised-button color="primary" (click)="saveChanges()">Save</button>
           <button mat-raised-button color="warn" (click)="cancelEditing()">Cancel</button>
         </div>
