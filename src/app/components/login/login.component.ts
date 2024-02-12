@@ -11,6 +11,7 @@ import { User } from 'src/app/models/User';
 })
 export class LoginComponent {
   user: User = {
+    name: '',
     userName: '',
     email: '',
     password: ''

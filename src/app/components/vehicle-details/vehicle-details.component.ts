@@ -11,7 +11,7 @@ import { MatTable } from '@angular/material/table';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Vehicle } from 'src/app/models/Vehicle';
-import { ServiceResponse } from 'src/app/models/ServiceResponse';
+import { GlobalSettingsService } from 'src/app/services/global-settings.service';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -19,11 +19,13 @@ import { ServiceResponse } from 'src/app/models/ServiceResponse';
   styleUrls: ['./vehicle-details.component.css']
 })
 export class VehicleDetailsComponent implements OnInit {
+
   isEdit: boolean = false;
   vehicleId: number = 0;
   vehicleDetails: Vehicle;
   displayedColumns: string[] = ['maintenanceDate', 'kilometersDriven', 'notes', 'price', 'details'];
   @ViewChild(MatTable) table: MatTable<Maintenance[]>;
+  isMetric: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,7 +33,8 @@ export class VehicleDetailsComponent implements OnInit {
     private vehicleService: VehicleService,
     private maintenanceService: MaintenanceService,
     private dialog: MatDialog,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private globalSettings: GlobalSettingsService
   ) { }
 
   ngOnInit() {
@@ -39,6 +42,7 @@ export class VehicleDetailsComponent implements OnInit {
     //   console.error('Vehicle cant be loaded');
     // }
     this.getVehicleById();
+    this.isMetric = this.globalSettings.getMeasureSetting()
   }
 
   getVehicleById() {
@@ -83,10 +87,41 @@ export class VehicleDetailsComponent implements OnInit {
     });
   }
 
+  openDriverModal() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        headerMessage: 'Driver details',
+        leftButton: {
+          visible: false,
+          color: '',
+          text: ''
+        },
+        rightButton: {
+          visible: false,
+          color: '',
+          text: ''
+        }
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
   openDeleteModal() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
-        vehicleName: this.vehicleDetails.modelName,
+        headerMessage: `Are you sure you want to delete ${this.vehicleDetails.modelName} ?`,
+        leftButton: {
+          visible: true,
+          color: '',
+          text: 'Cancel'
+        },
+        rightButton: {
+          visible: true,
+          color: 'warn',
+          text: 'Delete'
+        }
       },
     });
 
@@ -122,6 +157,14 @@ export class VehicleDetailsComponent implements OnInit {
         }
       }
     );
+  }
+
+  updateDistance(value: number): void {
+    if (!this.isMetric) {
+      this.vehicleDetails.kilometersDriven = Math.round(value / 0.6);
+    } else {
+      this.vehicleDetails.kilometersDriven = value;
+    }
   }
 
   onSave() {

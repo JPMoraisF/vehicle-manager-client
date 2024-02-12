@@ -32,6 +32,10 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 @NgModule({
   declarations: [
@@ -44,10 +48,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
     AddMaintenanceComponent,
     ConfirmationDialogComponent,
     LoginComponent,
+    UserDetailsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MatSlideToggleModule,
+    MatDividerModule,
     MatExpansionModule,
     BrowserAnimationsModule,
     MatSnackBarModule,

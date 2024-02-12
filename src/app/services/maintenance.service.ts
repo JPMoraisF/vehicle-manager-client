@@ -1,7 +1,7 @@
 // maintenance.service.ts
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Maintenance } from '../models/Maintenance';
 import { AppConfig } from '../config/config';

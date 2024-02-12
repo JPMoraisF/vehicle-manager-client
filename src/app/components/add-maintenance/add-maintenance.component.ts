@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { Maintenance } from 'src/app/models/Maintenance';
 import { MaintenanceItem } from 'src/app/models/MaintenanceItem';
+import { GlobalSettingsService } from 'src/app/services/global-settings.service';
 import { MaintenanceService } from 'src/app/services/maintenance.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
@@ -22,13 +23,15 @@ export class AddMaintenanceComponent implements OnInit {
   maintenanceForm: FormGroup;
   maintenanceItems: MaintenanceItem[] = [];
   @ViewChild(MatTable) table: MatTable<MaintenanceItem>;
+  isMetric: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public vehicleId: number,
     public dialogRef: MatDialogRef<AddMaintenanceComponent>,
     private fb: FormBuilder,
     private maintenanceService: MaintenanceService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private globalSettings: GlobalSettingsService) {
     this.maintenanceForm = this.fb.group({
       maintenanceDate: [null, Validators.required],
       kilometersDriven: [null, Validators.required],
@@ -38,10 +41,12 @@ export class AddMaintenanceComponent implements OnInit {
       quantity: [null],
       unitPrice: [null]
     });
+    
   }
 
   ngOnInit(): void {
     this.initializeForm();
+    this.isMetric = this.globalSettings.getMeasureSetting();
   }
 
   onRemoveItem(maintenanceItem: MaintenanceItem) {

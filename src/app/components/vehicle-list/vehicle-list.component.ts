@@ -1,5 +1,5 @@
 // vehicle-list.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Vehicle } from 'src/app/models/Vehicle';
 import { VehicleService } from 'src/app/services/vehicle.service';
@@ -9,7 +9,7 @@ import { VehicleService } from 'src/app/services/vehicle.service';
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css']
 })
-export class VehicleListComponent implements OnInit {
+export class VehicleListComponent implements OnInit, OnDestroy {
   vehicles: Vehicle[] = [];
   filteredVehicles: Vehicle[] = [];
   isLoading: boolean = false;
@@ -20,6 +20,10 @@ export class VehicleListComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.loadVehicles();
+  }
+
+  ngOnDestroy() {
+    console.log('Vehicle list destroyed!');
   }
 
   loadVehicles(): void {

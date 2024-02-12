@@ -11,7 +11,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Kilometers driven</mat-label>
+        <mat-label>{{isMetric ? "Kilometers" : "Miles"}} driven</mat-label>
         <input matInput type="number" formControlName="kilometersDriven" required>
       </mat-form-field>
 
