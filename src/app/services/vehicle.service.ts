@@ -36,21 +36,31 @@ export class VehicleService {
     return this.http.get<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint}/${id}`, {headers});
   }
 
-  addVehicle(vehicle: Vehicle): Observable<Vehicle> {
+  addVehicle(vehicle: Vehicle): Observable<ServiceResponse<Vehicle>> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
     const url = `${this.apiUrl + this.urlEndpoint}`
-    return this.http.post<Vehicle>(url, vehicle, {headers});
+    return this.http.post<ServiceResponse<Vehicle>>(url, vehicle, {headers});
   }
 
-  updateVehicle(id: number, vehicle: Vehicle): Observable<Vehicle> {
-    return this.http.put<Vehicle>(`${this.apiUrl + this.urlEndpoint}/${id}`, vehicle);
+  updateVehicle(id: number, vehicle: Vehicle): Observable<ServiceResponse<Vehicle>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint, {headers}}/${id}`, vehicle);
   }
 
-  deleteVehicle(vehicleId: number): Observable<Vehicle> {
-    return this.http.delete<Vehicle>(`${this.apiUrl + this.urlEndpoint}/${vehicleId}`);
+  deleteVehicle(vehicleId: number): Observable<ServiceResponse<Vehicle>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.delete<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint, {headers}}/${vehicleId}`);
   }
 }
