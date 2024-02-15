@@ -1,4 +1,3 @@
-// user-details.component.ts
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
@@ -57,8 +56,6 @@ export class UserDetailsComponent implements OnInit {
         console.error(error);
       },
     })
-    // Lógica para salvar as alterações no usuário
-    // Atualize this.user com os valores editados
     this.user = { ...this.editedUser };
     
     this.isEditing = false;
@@ -66,7 +63,6 @@ export class UserDetailsComponent implements OnInit {
 
   cancelEditing(): void {
     this.isEditing = false;
-    // Se necessário, redefina os campos editados para os valores originais
     this.editedUser = { ...this.user };
   }
 }

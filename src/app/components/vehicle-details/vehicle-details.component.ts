@@ -1,4 +1,3 @@
-// Importe os módulos necessários
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
@@ -12,6 +11,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { NotificationService } from 'src/app/services/notification.service';
 import { Vehicle } from 'src/app/models/Vehicle';
 import { GlobalSettingsService } from 'src/app/services/global-settings.service';
+import { ServiceResponse } from 'src/app/models/ServiceResponse';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -38,9 +38,6 @@ export class VehicleDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // if(this.vehicleDetails == null){
-    //   console.error('Vehicle cant be loaded');
-    // }
     this.getVehicleById();
     this.isMetric = this.globalSettings.getMeasureSetting()
   }
@@ -75,7 +72,7 @@ export class VehicleDetailsComponent implements OnInit {
   }
 
   openMaintenanceDetailsDialog(maintenanceId: number): void {
-    this.maintenanceService.getMaintenanceDetails(maintenanceId).subscribe((maintenanceDetails: Maintenance) => {
+    this.maintenanceService.getMaintenanceDetails(maintenanceId).subscribe((maintenanceDetails: ServiceResponse<Maintenance>) => {
       console.log('Maintenance details', maintenanceDetails);
       const dialogRef = this.dialog.open(MaintenanceDetailsComponent, {
         width: '700px',

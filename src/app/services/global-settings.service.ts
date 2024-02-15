@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GlobalSettingsService {
-  // Choose between metric and imperial units
   private isMetric = true;
 
   constructor() { }

@@ -1,4 +1,3 @@
-// vehicle-list.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Vehicle } from 'src/app/models/Vehicle';
