@@ -5,41 +5,32 @@
         <div *ngIf="!isEditing">
           <div class="user-info">
             <div class="user-info-item">
-              <p><strong>Username:</strong> {{ user.userName }}</p>
+              <p><strong>Username:</strong> Test </p>
             </div>
             <div class="user-info-item">
-              <p><strong>Full Name:</strong> {{ user.name }}</p>
+              <p><strong>Full Name:</strong> Test</p>
             </div>
             <div class="user-info-item">
-              <p><strong>Email:</strong> {{ user.email }}</p>
+              <p><strong>Email:</strong>Test</p>
             </div>
             <div class="user-info-item">
               <p><strong>Unit of measure:</strong> {{ useMetric ? "Metric" : "Imperial" }}</p>
             </div>
-            <!-- <div class="user-info-item">
-              <p><strong>Address:</strong> {{ user.address }}</p>
-            </div>
-            <div class="user-info-item">
-              <p><strong>Age:</strong> {{ user.age }}</p>
-            </div>
-            <div class="user-info-item">
-              <p><strong>Driver License Category:</strong> {{ user.driverLicenseCategory }}</p>
-            </div> -->
           </div>
-          <button mat-raised-button color="primary" (click)="startEditing()">Edit</button>
+          <button mat-raised-button color="primary" >Edit</button>
         </div>
   
         <div *ngIf="isEditing">
           <form class="form-container" >
             <mat-form-field class="form-field">
               <mat-label>Name</mat-label>
-              <input type="text" id="name" name="name" [(ngModel)]="editedUser.name" matInput required [disabled]="isLoading">
-            </mat-form-field>
+              <input type="text" id="name" name="name"  matInput required [disabled]="isLoading">
+            </mat-form-field>asdas
             <mat-slide-toggle [(ngModel)]="useMetric" name="useMetric">Use metric units</mat-slide-toggle>
 
           </form>
-          <button mat-raised-button color="primary" (click)="saveChanges()">Save</button>
-          <button mat-raised-button color="warn" (click)="cancelEditing()">Cancel</button>
+          <button mat-raised-button color="primary" >Save</button>
+          <button mat-raised-button color="warn" >Cancel</button>
         </div>
       </mat-card-content>
     </mat-card>

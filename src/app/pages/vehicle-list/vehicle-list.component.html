@@ -3,6 +3,7 @@
 </mat-form-field>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>
+
 <div *ngIf="!isLoading && !hasError && filteredVehicles.length > 0">
   <div *ngFor="let vehicle of filteredVehicles" class="vehicle-item" (click)="redirectToDetails(vehicle)">
 
@@ -21,8 +22,9 @@
     </div>
   </div>
 </div>
+
 <h1 style="text-align: center;" *ngIf="filteredVehicles.length == 0 && !isLoading && !hasError">
-  No vehicles to show <a href="/add-vehicle"><button mat-raised-button color="primary">Add one now</button></a>
+  No vehicles to show <button routerLink="/add-vehicle" mat-raised-button color="primary">Add one now</button>
 </h1>
 
 <h1 style="text-align: center;" *ngIf="hasError">Error fetching vehicles</h1>

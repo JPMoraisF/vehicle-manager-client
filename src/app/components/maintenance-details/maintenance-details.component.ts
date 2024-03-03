@@ -14,7 +14,7 @@ export class MaintenanceDetailsComponent {
   private maintenanceService: MaintenanceService, 
   public dialog: MatDialog) {}
 
-  editMaintenance(id:number): void {
+  editMaintenance(id: string): void {
     this.maintenanceService.editMaintenance(id, this.data).subscribe(
       (response) => {
         console.log('Manutenção editada com sucesso:', response);
@@ -26,6 +26,6 @@ export class MaintenanceDetailsComponent {
   }
 
   getTotalCost() {
-    return this.data.maintenanceItems.map(t => t.totalAmount).reduce((acc, value) => acc + value, 0);
+    return this.data.maintenanceItems.map(t => t.quantity * t.unitCost).reduce((acc, value) => acc + value, 0);
   }
 }

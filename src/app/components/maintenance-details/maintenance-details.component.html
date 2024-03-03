@@ -3,6 +3,7 @@
     <button mat-icon-button (click)="editMaintenance(data.id)">
         <mat-icon>edit</mat-icon>
       </button>
+      <p>Was it done on dealership: {{data.isDealershipService ? 'Yes' : 'No'}}</p>
       <p>Kilometers driven: {{ data.kilometersDriven }}</p>
       <p>Date of service: {{data.maintenanceDate | date: 'dd/MM/yyyy' }}</p>
 
@@ -17,18 +18,18 @@
         <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef>Quantity</th>
             <td mat-cell *matCellDef="let maintenance">{{ maintenance.quantity }}</td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <td mat-footer-cell *matFooterCellDef>-</td>
         </ng-container>
 
         <ng-container matColumnDef="unitCost">
             <th mat-header-cell *matHeaderCellDef>Unit Cost</th>
             <td mat-cell *matCellDef="let maintenance">{{ maintenance.unitCost }}</td>
-            <td mat-footer-cell *matFooterCellDef></td>
+            <td mat-footer-cell *matFooterCellDef>-</td>
         </ng-container>
 
         <ng-container matColumnDef="totalAmount">
             <th mat-header-cell *matHeaderCellDef>Total cost</th>
-            <td mat-cell *matCellDef="let maintenance">{{ maintenance.totalAmount | currency }}</td>
+            <td mat-cell *matCellDef="let maintenance">{{ maintenance.quantity * maintenance.unitCost | currency }}</td>
             <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
         </ng-container>
 

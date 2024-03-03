@@ -1,5 +1,5 @@
 export interface MaintenanceItem {
-  id?: number;
+  id?: string;
   description: string;
   unitCost: number;
   quantity: number;

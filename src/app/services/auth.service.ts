@@ -1,109 +1,104 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { AppConfig } from '../config/config';
-import { Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable, Subject, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { User } from '../models/User';
 import { ServiceResponse } from '../models/ServiceResponse';
+
+export interface AuthResponseData {
+  kind: string,
+  idToken: string, 
+  email: string, 
+  refreshToken: string,
+  expiresIn: string,
+  localId: string
+  registered?: boolean
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = AppConfig.apiUrl;
-  private urlEndpoint = 'auth'
+  private registerUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDevuTN1g6UdqhTHc2tRz-ssya5R3XBfo8';
+  private loginUrl = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDevuTN1g6UdqhTHc2tRz-ssya5R3XBfo8'
+  private urlEndpoint = 'Hi'
+
+  user = new Subject<User>();
+  public userId;
+  public userToken;
+  private loggedIn: boolean = false;
 
   constructor(
-    private http: HttpClient,
-    private router: Router) { }
+    private http: HttpClient) { }
 
-  login(user: User): Observable<any> {
-    const model = { name: user.userName, password: user.password };
-    const url = `${this.apiUrl + this.urlEndpoint}/login`;
+  login(email: string, password: string) {
+    const model = { email: email, password: password, returnSecureToken: true};
 
-    return this.http.post<any>(url, model).pipe(
-      map(response => {
-        localStorage.setItem('access_token', response.token);
-        return response;
+    return this.http.post<AuthResponseData>(this.loginUrl, model).pipe(
+      tap(response => {
+        const expirationDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
+        const user = new User(response.email, response.localId, response.idToken, expirationDate);
+        this.userId = response.localId;
+        this.userToken = response.idToken;
+        this.loggedIn = true;
+        this.user.next(user);
       }),
       catchError(error => {
-        console.error('Authentication error:', error);
-        throw error;
+        return this.handleError(error);
       })
     );
   }
 
-  updateUser(updatedUser: User){
-    const url = `${this.apiUrl + this.urlEndpoint}/update`;
-    const token = this.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.post<ServiceResponse<User>>(url,updatedUser, { headers });
-  }
-
-  getUser(): Observable<ServiceResponse<User>> {
-    const url = `${this.apiUrl + this.urlEndpoint}/`;
-    const token = this.getToken();
-    let userId = '';
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    if (token) {
-      const decodedToken: any = jwtDecode(token);
-      if (decodedToken && decodedToken.sub) {
-        userId = decodedToken.sub;
-      }
+  handleError(error: any){
+    let errorMessage
+    switch(error.error.error.message){
+      case 'EMAIL_EXISTS':
+        errorMessage = 'Email already exists'
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'Email does not exists'
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'Password incorrect'
+        break;
     }
-    return this.http.get<ServiceResponse<User>>(url + userId, { headers });
+    return throwError (errorMessage);
   }
 
-  register(user: User) {
-    const model = { userName: user.userName, password: user.password, email: user.email, name: user.name };
-    const url = `${this.apiUrl + this.urlEndpoint}/register`;
-
-    return this.http.post<any>(url, model).pipe(
-      map(response => {
-        localStorage.setItem('access_token', response.token);
-        return response;
+  register(email: string, password: string) {
+    const model = { password: password, email: email, returnSecureToken: true};
+    
+    return this.http.post<AuthResponseData>(this.registerUrl, model).pipe(
+      tap(response => {
+        const expirationDate = new Date(new Date().getTime() + +response.expiresIn * 1000);
+        const user = new User(response.email, response.localId, response.idToken, expirationDate);
+        this.user.next(user);
       }),
       catchError(error => {
-        console.log('Error making request: ', error);
-        throw error;
+        return this.handleError(error);
       })
     )
   }
 
-  getUserName(): string {
-    const token = this.getToken();
+  updateUser(updatedUser: User){
+    const url = `${this.registerUrl + this.urlEndpoint}/update`;
 
-    if (token) {
-      const decodedToken: any = jwtDecode(token);
-      if (decodedToken && decodedToken.sub) {
-        return decodedToken.sub;
-      }
-    }
-    return null;
+    return this.http.post<ServiceResponse<User>>(url,updatedUser);
+  }
+
+  getUser(): Observable<ServiceResponse<User>> {
+    const url = `${this.registerUrl + this.urlEndpoint}/`;
+    let userId = '';
+    return this.http.get<ServiceResponse<User>>(url + userId);
   }
 
   isLoggedIn(): boolean {
-    const token = localStorage.getItem('access_token');
-    const JwtHelper = new JwtHelperService();
-    return !JwtHelper.isTokenExpired(token);
+     return this.loggedIn
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    this.router.navigate(['/login']);
-  }
-
-  getToken() {
-    return localStorage.getItem('access_token');
+    this.loggedIn = false;
+    this.user.next(null);
   }
 }

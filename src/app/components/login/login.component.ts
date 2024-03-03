@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Route, Router } from '@angular/router';
+import { AuthResponseData, AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/services/notification.service';
-import { User } from 'src/app/models/User';
+import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -10,23 +11,33 @@ import { User } from 'src/app/models/User';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  user: User = {
-    name: '',
-    userName: '',
-    email: '',
-    password: ''
-  }
-  isRegister: boolean = false;
   isLoading: boolean = false;
+  isLoginMode: boolean = true;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private notificationService: NotificationService) { }
 
-  login(): void {
+  submit(loginForm: NgForm): void {
+    if(!loginForm.valid){
+      return;
+    }
     this.isLoading = true;
-    this.authService.login(this.user).subscribe(
+    const email = loginForm.value.email;
+    const password = loginForm.value.password;
+    
+    let authObs: Observable<AuthResponseData>;
+
+    this.isLoading = true;
+
+    if (this.isLoginMode) {
+      authObs = this.authService.login(email, password);
+    } else {
+      authObs = this.authService.register(email, password);
+    }
+
+    authObs.subscribe(
       {
         next: () => {
           this.isLoading = false;
@@ -35,24 +46,9 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading = false;
-          this.notificationService.notify(`Error logging in: ${error.error.message}`)
+          this.notificationService.notify(`Error logging in: ${error}`)
         }
       }
     );
-  }
-
-  register() {
-    this.authService.register(this.user)
-      .subscribe(
-        {
-          next: () => {
-            this.isRegister = true;
-            this.router.navigate['/my-vehicles'];
-          },
-          error: () => {
-            this.notificationService.notify('Error during register')
-          }
-        }
-      )
   }
 }

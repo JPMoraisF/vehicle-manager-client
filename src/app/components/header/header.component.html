@@ -1,15 +1,11 @@
-<!-- header.component.html -->
 <mat-toolbar color="primary">
   <span>Vehicle Manager</span>
   <span class="spacer"></span>
-  <button mat-button routerLink="/my-vehicles">My vehicles</button>
-  <button mat-button routerLink="/add-vehicle">Add vehicle</button>
-  <button *ngIf="!isLoggedIn" routerLink="/login">Login</button>
-    
-  <mat-icon
-   *ngIf="isLoggedIn" 
-    mat-button 
-    [matMenuTriggerFor]="menu"
+  <button *ngIf="isAuthenticated" mat-button routerLink="/my-vehicles">My vehicles</button>
+  <button *ngIf="isAuthenticated" mat-button routerLink="/add-vehicle">Add vehicle</button>
+  <button mat-raised-button *ngIf="!isAuthenticated" routerLink="/login">Login</button>
+
+  <mat-icon *ngIf="isAuthenticated" mat-button [matMenuTriggerFor]="menu"
     style="cursor: pointer;">account_circle</mat-icon>
   <mat-menu #menu="matMenu">
     <button mat-menu-item routerLink="/user">Profile</button>

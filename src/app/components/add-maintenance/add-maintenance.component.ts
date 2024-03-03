@@ -24,9 +24,10 @@ export class AddMaintenanceComponent implements OnInit {
   maintenanceItems: MaintenanceItem[] = [];
   @ViewChild(MatTable) table: MatTable<MaintenanceItem>;
   isMetric: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public vehicleId: number,
+    @Inject(MAT_DIALOG_DATA) public vehicleId: any,
     public dialogRef: MatDialogRef<AddMaintenanceComponent>,
     private fb: FormBuilder,
     private maintenanceService: MaintenanceService,
@@ -41,7 +42,7 @@ export class AddMaintenanceComponent implements OnInit {
       quantity: [null],
       unitPrice: [null]
     });
-    
+
   }
 
   ngOnInit(): void {
@@ -74,6 +75,7 @@ export class AddMaintenanceComponent implements OnInit {
 
   onSubmit(): void {
     if (this.maintenanceForm.valid) {
+      this.isLoading = true;
       const maintenanceData: Maintenance = {
         maintenanceDate: this.maintenanceForm.get('maintenanceDate')?.value,
         kilometersDriven: this.maintenanceForm.get('kilometersDriven')?.value,
@@ -83,13 +85,15 @@ export class AddMaintenanceComponent implements OnInit {
         vehicleId: this.vehicleId,
       };
 
-      this.maintenanceService.addMaintenance(maintenanceData)
+      this.maintenanceService.addMaintenance(this.vehicleId, maintenanceData)
         .subscribe(
           (response) => {
+            this.isLoading = false;
             this.notificationService.notify('Service added!');
             this.dialogRef.close();
           },
           (error) => {
+            this.isLoading = false;
             this.notificationService.notify('Error adding service to vehicle!');
             console.error(error);
           }

@@ -1,17 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MaintenanceDetailsComponent } from '../maintenance-details/maintenance-details.component';
+import { MaintenanceDetailsComponent } from '../../components/maintenance-details/maintenance-details.component';
 import { MaintenanceService } from 'src/app/services/maintenance.service';
 import { Maintenance } from 'src/app/models/Maintenance';
-import { AddMaintenanceComponent } from '../add-maintenance/add-maintenance.component';
+import { AddMaintenanceComponent } from '../../components/add-maintenance/add-maintenance.component';
 import { MatTable } from '@angular/material/table';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from 'src/app/services/notification.service';
 import { Vehicle } from 'src/app/models/Vehicle';
 import { GlobalSettingsService } from 'src/app/services/global-settings.service';
-import { ServiceResponse } from 'src/app/models/ServiceResponse';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -19,16 +18,13 @@ import { ServiceResponse } from 'src/app/models/ServiceResponse';
   styleUrls: ['./vehicle-details.component.css']
 })
 export class VehicleDetailsComponent implements OnInit {
-
   isEdit: boolean = false;
-  vehicleId: number = 0;
   vehicleDetails: Vehicle;
   displayedColumns: string[] = ['maintenanceDate', 'kilometersDriven', 'notes', 'price', 'details'];
   @ViewChild(MatTable) table: MatTable<Maintenance[]>;
   isMetric: boolean;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private vehicleService: VehicleService,
     private maintenanceService: MaintenanceService,
@@ -38,50 +34,38 @@ export class VehicleDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getVehicleById();
+    this.vehicleDetails = this.vehicleService.vehicleSelected;
+    console.log(this.vehicleDetails.maintenanceList)
     this.isMetric = this.globalSettings.getMeasureSetting()
   }
 
-  getVehicleById() {
-    this.route.params.subscribe(params => {
-      this.vehicleId = +params['id'];
-      this.vehicleService.getVehicleById(this.vehicleId).subscribe(
-        {
-          next: (serviceResponse) => {
-            this.vehicleDetails = serviceResponse.data
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        }
-      );
-    });
-  }
-
   onDeleteVehicle(): void {
-    this.vehicleService.deleteVehicle(this.vehicleId)
-      .subscribe((response) => {
-        this.notificationService.notify('Vehicle deleted');
-        this.router.navigate(['/my-vehicles']);
-      }, (error) => {
-        console.log(error);
-        this.notificationService.notify('Error deleting vehicle');
-        console.error(error);
-
+    this.vehicleService.deleteVehicle(this.vehicleDetails.id)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          this.notificationService.notify('Vehicle deleted');
+          this.router.navigate(['/my-vehicles']);
+        },
+        error: (error) => {
+          this.notificationService.notify('Error deleting vehicle');
+          console.error(error);
+        }
       });
   }
 
-  openMaintenanceDetailsDialog(maintenanceId: number): void {
-    this.maintenanceService.getMaintenanceDetails(maintenanceId).subscribe((maintenanceDetails: ServiceResponse<Maintenance>) => {
-      console.log('Maintenance details', maintenanceDetails);
-      const dialogRef = this.dialog.open(MaintenanceDetailsComponent, {
-        width: '700px',
-        data: maintenanceDetails,
-      });
+  openMaintenanceDetailsDialog(maintenanceId: string): void {
+    this.maintenanceService.getMaintenanceDetails(this.vehicleDetails.id, maintenanceId)
+      .subscribe((maintenanceDetails: Maintenance) => {
+        console.log('Maintenance details', maintenanceDetails);
+        const dialogRef = this.dialog.open(MaintenanceDetailsComponent, {
+          width: '700px',
+          data: maintenanceDetails,
+        });
 
-      dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(result => {
+        });
       });
-    });
   }
 
   openDriverModal() {
@@ -132,17 +116,16 @@ export class VehicleDetailsComponent implements OnInit {
   addMaintenance(): void {
     const dialogRef = this.dialog.open(AddMaintenanceComponent, {
       width: '900px',
-      data: this.vehicleId
+      data: this.vehicleDetails.id
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getVehicleById();
       this.table.renderRows();
     });
   }
 
   deleteMaintenance(maintenance: Maintenance): void {
-    this.maintenanceService.deleteMaintenance(maintenance.id).subscribe(
+    this.maintenanceService.deleteMaintenance(this.vehicleDetails.id, maintenance.id).subscribe(
       {
         next: () => {
           this.notificationService.notify(`Service done on ${maintenance.maintenanceDate} deleted successfully`);
@@ -165,7 +148,7 @@ export class VehicleDetailsComponent implements OnInit {
   }
 
   onSave() {
-    this.vehicleService.updateVehicle(this.vehicleId, this.vehicleDetails).subscribe(
+    this.vehicleService.updateVehicle(this.vehicleDetails.id, this.vehicleDetails).subscribe(
       (response) => {
         this.notificationService.notify('Vehicle details updated successfully');
         this.isEdit = false;
@@ -190,5 +173,12 @@ export class VehicleDetailsComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  getMaintenanceTotalCost(maintenanceItems: any) {
+    return maintenanceItems.reduce((sum, object) => {
+      const itemTotal = object.quantity * object.unitCost;
+      return sum + itemTotal;
+    }, 0);
   }
 }

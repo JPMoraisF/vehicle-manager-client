@@ -1,7 +1,7 @@
 import { MaintenanceItem } from "./MaintenanceItem";
 
 export interface Maintenance {
-  id?: number;
+  id?: string;
   maintenanceDate: Date;
   kilometersDriven: number;
   notes?: string;

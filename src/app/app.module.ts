@@ -9,13 +9,12 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
-import { VehicleDetailsComponent } from './components/vehicle-details/vehicle-details.component';
+import { VehicleListComponent } from './pages/vehicle-list/vehicle-list.component';
+import { VehicleDetailsComponent } from './pages/vehicle-details/vehicle-details.component';
 import { AddVehicleComponent } from './components/add-vehicle/add-vehicle.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,7 +30,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatNativeDateModule} from '@angular/material/core';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { LoginComponent } from './components/login/login.component';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import {MatDividerModule} from '@angular/material/divider';
@@ -55,7 +53,6 @@ import {MatDividerModule} from '@angular/material/divider';
     AppRoutingModule,
     MatSlideToggleModule,
     MatDividerModule,
-    MatExpansionModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatTableModule,
@@ -70,7 +67,6 @@ import {MatDividerModule} from '@angular/material/divider';
     FormsModule,
     MatIconModule,
     MatInputModule,
-    MatSortModule,
     MatDialogModule,
     MatCardModule,
     HttpClientModule,

@@ -1,6 +1,10 @@
-# VehicleManagerClient
+# Vehicle Manager
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.2.
+There are two main branches on this repository: `Main` and `Firebase Main`
+
+Main is the project using SQL Server as the database and the original development of the App.
+
+Firebase Main is an attempt to create an online and free database to deploy the app quickly on Github Pages
 
 ## Development server
 
@@ -21,7 +25,3 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

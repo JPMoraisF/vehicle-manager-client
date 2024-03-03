@@ -1,7 +1,7 @@
 import { Maintenance } from "./Maintenance";
 
 export interface Vehicle {
-  id: number;
+  id: string;
   make: string;
   modelName: string;
   kilometersDriven: number;

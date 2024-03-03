@@ -1,4 +1,4 @@
 
 export const AppConfig = {
-    apiUrl: 'https://localhost:7244/',
+    apiUrl: 'https://vehicle-manager-bdaa4-default-rtdb.firebaseio.com/',
   };

@@ -1,5 +1,6 @@
 <div class="modal-box">
-  <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()"
+  *ngIf="!isLoading">
     <h2>Maintenance details</h2>
     <div style="display: flex;justify-content: space-between;">
       <mat-form-field>
@@ -32,7 +33,7 @@
 
       <input matInput type="number" placeholder="Unit Cost" formControlName="unitPrice" required>
 
-      <button mat-button color="primary" class="add-item-button" (click)="addItem()" type="button">Add
+      <button mat-raised-button color="primary" class="add-item-button" (click)="addItem()" type="button">Add
         Item</button>
     </div>
 
@@ -77,5 +78,6 @@
 
     <button mat-raised-button color="primary" type="submit" class="add-button">Add service</button>
   </form>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 </div>

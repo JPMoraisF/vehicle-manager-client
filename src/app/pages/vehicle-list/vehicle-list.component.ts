@@ -8,8 +8,8 @@ import { VehicleService } from 'src/app/services/vehicle.service';
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css']
 })
-export class VehicleListComponent implements OnInit, OnDestroy {
-  vehicles: Vehicle[] = [];
+export class VehicleListComponent implements OnInit {
+  vehicles: any[] = [];
   filteredVehicles: Vehicle[] = [];
   isLoading: boolean = false;
   hasError: boolean = false;
@@ -17,29 +17,25 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private vehicleService: VehicleService) { }
 
   ngOnInit() {
-    this.isLoading = true;
     this.loadVehicles();
   }
 
-  ngOnDestroy() {
-    console.log('Vehicle list destroyed!');
-  }
-
   loadVehicles(): void {
+    this.isLoading = true;
     this.vehicleService.getVehicles().subscribe({
       next: (serviceResponse) => {
-        if (serviceResponse.data && serviceResponse.data.length > 0) {
-          this.vehicles = serviceResponse.data;
+        if(serviceResponse != null){
+          this.vehicles = serviceResponse;
           this.filteredVehicles = this.vehicles;
-          this.isLoading = false;
-        } else {
-          this.isLoading = false;
+          console.log(this.vehicles)
         }
+
+        this.isLoading = false;
       },
       error: (serviceResponse) => {
         this.hasError = true;
+        console.error(serviceResponse);
         this.isLoading = false;
-        console.error(serviceResponse.errorList);
       }
     });
   }
@@ -54,6 +50,7 @@ export class VehicleListComponent implements OnInit, OnDestroy {
   }
 
   redirectToDetails(vehicle: Vehicle) {
-    this.router.navigate(['/vehicle-details', vehicle.id]);
+    this.vehicleService.setSelectedVehicle(vehicle);
+    this.router.navigate(['/vehicle-details']);
   }
 }

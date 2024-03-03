@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Vehicle } from 'src/app/models/Vehicle';
 import { VehicleService } from 'src/app/services/vehicle.service';
 
@@ -11,21 +12,22 @@ import { VehicleService } from 'src/app/services/vehicle.service';
 })
 export class AddVehicleComponent {
   newVehicle: Vehicle = {
-    id: 0,
-      make: '',
-      modelName: '',
-      modelYear: 2020,
-      vin: '',
-      licensePlate: '',
-      color: '',
-      notes: '',
-      image: '',
-      kilometersDriven: 0,
-      dateAdded: new Date(),
-      dateUpdated: new Date(),
-      userId: '',
-      maintenanceList: []
+    id: '',
+    make: '',
+    modelName: '',
+    modelYear: 2020,
+    vin: '',
+    licensePlate: '',
+    color: '',
+    notes: '',
+    image: '',
+    kilometersDriven: 0,
+    dateAdded: new Date(),
+    dateUpdated: new Date(),
+    userId: '',
+    maintenanceList: []
   };
+  private userSub: Subscription;
 
   constructor(
     private vehicleService: VehicleService,
@@ -34,16 +36,17 @@ export class AddVehicleComponent {
   }
 
   onSubmit() {
-    console.log(this.newVehicle);
     this.vehicleService.addVehicle(this.newVehicle).subscribe(
-      (response) => {
-        console.log('Novo veículo adicionado com sucesso:', response);
-        this.snackBar.open('Veículo adicionado com sucesso!' , '', {duration: 3000});
-        this.router.navigate(['/my-vehicles/']);
-      },
-      (error) => {
-        console.error('Erro ao adicionar o veículo:', error.error);
-        this.snackBar.open(`Erro ao adicionar veículo: ${error.error}` , '', {duration: 5000});
+      {
+        next: (response) => {
+          console.log('New vehicle successfully added:', response);
+          this.snackBar.open('New vehicle successfully added!', '', { duration: 3000 });
+          this.router.navigate(['/my-vehicles/']);
+        },
+        error: (error) => {
+          console.error('Error adding vehicle:', error.error);
+          this.snackBar.open(`Error adding vehicle: ${error.error}`, '', { duration: 5000 });
+        }
       }
     );
   }
@@ -61,7 +64,7 @@ export class AddVehicleComponent {
 
   resetForm() {
     this.newVehicle = {
-      id: 0,
+      id: '',
       make: '',
       modelName: '',
       modelYear: 2020,

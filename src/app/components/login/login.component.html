@@ -1,64 +1,21 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <div class="main-div">
-  <form (ngSubmit)="login()" *ngIf="!isRegister" #loginForm="ngForm">
-    <h1 style="text-align: center;">Login</h1>
+  <form (ngSubmit)="submit(loginForm)" #loginForm="ngForm">
+    <h1 style="text-align: center;">{{isLoginMode ? 'Login' : 'Sign Up'}}</h1>
     <mat-form-field appearance="fill">
-      <mat-label>Username:</mat-label>
-      <input [disabled]="isLoading" matInput type="text" id="username" name="username" [(ngModel)]="user.userName"
-        required>
+      <mat-label>Email:</mat-label>
+      <input [disabled]="isLoading" matInput type="email" id="email" name="email" ngModel required>
         
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Password:</mat-label>
-      <input [disabled]="isLoading" matInput type="password" id="password" name="password" [(ngModel)]="user.password"
-        required>
+      <input [disabled]="isLoading" matInput type="password" id="password" name="password" ngModel required>
     </mat-form-field>
 
     <div class="buttons">
-      <button mat-raised-button [disabled]="!loginForm.valid" type="submit">Login</button>
-      <button mat-raised-button color="primary" (click)="isRegister = !isRegister">Register</button>
-    </div>
-  </form>
-
-  <form (ngSubmit)="register()" *ngIf="isRegister" #registerForm="ngForm">
-    <h1 style="text-align: center;">Register</h1>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Email:</mat-label>
-      <input [disabled]="isLoading" matInput type="email" id="email" name="email" [(ngModel)]="user.email" required>
-      <mat-error *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">
-        Email is required and must be a valid email address.
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Username:</mat-label>
-      <input [disabled]="isLoading" matInput type="text" id="username" name="username" [(ngModel)]="user.userName" required>
-      <mat-error *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].dirty || registerForm.controls['username'].touched)">
-        Username is required.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Full Name:</mat-label>
-      <input [disabled]="isLoading" matInput type="text" id="name" name="name" [(ngModel)]="user.name" required>
-      <mat-error *ngIf="registerForm.controls['name'].invalid && (registerForm.controls['name'].dirty || registerForm.controls['name'].touched)">
-        Full name is required.
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Password:</mat-label>
-      <input [disabled]="isLoading" matInput type="password" id="password" name="password" [(ngModel)]="user.password" required>
-      <mat-error *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].dirty || registerForm.controls['password'].touched)">
-        Password is required.
-      </mat-error>
-    </mat-form-field>
-
-    <div class="buttons">
-      <button mat-raised-button [disabled]="!registerForm.valid" type="submit">Register</button>
-      <button mat-raised-button color="primary" (click)="isRegister = !isRegister">Back to Login</button>
+      <button mat-raised-button type="button" (click)="isLoginMode = !isLoginMode">Switch to {{!isLoginMode ? 'Login' : 'Sign Up'}}</button>
+      <button mat-raised-button color="primary" [disabled]="!loginForm.valid" type="submit">{{isLoginMode ? 'Login' : 'Sign Up'}}</button>
     </div>
   </form>
 </div>

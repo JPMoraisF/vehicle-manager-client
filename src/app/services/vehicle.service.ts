@@ -1,65 +1,68 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AppConfig } from '../config/config';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, Subject, Subscription, map, of, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Vehicle } from '../models/Vehicle';
-import { ServiceResponse } from '../models/ServiceResponse';
+import { AppConfig } from '../config/config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class VehicleService {
+export class VehicleService{
   private apiUrl = AppConfig.apiUrl;
-  private urlEndpoint = 'Vehicle'
+  public vehicleList: any[] = [];
+  public vehicleSelected: any;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService) {}
+    private authService: AuthService) { 
+    }
 
-  getVehicles(): Observable<ServiceResponse<Vehicle[]>> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get<ServiceResponse<Vehicle[]>>(this.apiUrl + this.urlEndpoint, {headers});
+  getVehicles(): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(`${this.apiUrl}users/${this.authService.userId}/vehicle.json`, {
+      params: new HttpParams().set('auth', this.authService.userToken)
+    }).pipe(
+      map((vehicles) => {
+        let vehicleList = [];
+        for (const key in vehicles){
+          if(vehicles.hasOwnProperty(key)){
+            vehicleList.push({...vehicles[key], id: key})
+          }
+        }
+        this.vehicleList = vehicleList;
+        return this.vehicleList;
+      })
+    );
   }
 
-  getVehicleById(id: number): Observable<ServiceResponse<Vehicle>> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  addVehicle(vehicle: Vehicle): Observable<Vehicle> {
+    const url = `${this.apiUrl}users/${this.authService.userId}/vehicle.json`
+    return this.http.post<Vehicle>(url, vehicle, {
+      params: new HttpParams().set('auth', this.authService.userToken)
     });
-    return this.http.get<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint}/${id}`, {headers});
   }
 
-  addVehicle(vehicle: Vehicle): Observable<ServiceResponse<Vehicle>> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  updateVehicle(id: string, vehicle: Vehicle): Observable<Vehicle> {
+    const url = `${this.apiUrl}users/${this.authService.userId}/vehicle/${id}/.json`
+    return this.http.patch<Vehicle>(url, vehicle, {
+      params: new HttpParams().set('auth', this.authService.userToken)
     });
-    const url = `${this.apiUrl + this.urlEndpoint}`
-    return this.http.post<ServiceResponse<Vehicle>>(url, vehicle, {headers});
   }
 
-  updateVehicle(id: number, vehicle: Vehicle): Observable<ServiceResponse<Vehicle>> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  deleteVehicle(vehicleId: string): Observable<Vehicle> {
+    const url = `${this.apiUrl}users/${this.authService.userId}/vehicle/${vehicleId}/.json`
+    return this.http.delete<Vehicle>(url, {
+      params: new HttpParams().set('auth', this.authService.userToken)
     });
-    return this.http.put<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint, {headers}}/${id}`, vehicle);
   }
-
-  deleteVehicle(vehicleId: number): Observable<ServiceResponse<Vehicle>> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.delete<ServiceResponse<Vehicle>>(`${this.apiUrl + this.urlEndpoint, {headers}}/${vehicleId}`);
+  setSelectedVehicle(vehicle: Vehicle){
+    let maintenanceList = [];
+    for (const key in vehicle.maintenanceList){
+      if(vehicle.maintenanceList.hasOwnProperty(key)){
+        maintenanceList.push({...vehicle.maintenanceList[key], id: key})
+      }
+    }
+    vehicle.maintenanceList = maintenanceList;
+    this.vehicleSelected = vehicle;
   }
 }
