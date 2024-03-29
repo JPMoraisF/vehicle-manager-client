@@ -27,7 +27,6 @@ export class VehicleListComponent implements OnInit {
         if(serviceResponse != null){
           this.vehicles = serviceResponse;
           this.filteredVehicles = this.vehicles;
-          console.log(this.vehicles)
         }
 
         this.isLoading = false;
@@ -46,7 +45,6 @@ export class VehicleListComponent implements OnInit {
       vehicle.modelName.toLowerCase().includes(filterValue) ||
       vehicle.licensePlate.toLowerCase().includes(filterValue)
     );
-    console.log(this.filteredVehicles);
   }
 
   redirectToDetails(vehicle: Vehicle) {

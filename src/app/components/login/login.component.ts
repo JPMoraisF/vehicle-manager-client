@@ -42,7 +42,7 @@ export class LoginComponent {
         next: () => {
           this.isLoading = false;
           this.notificationService.notify('Successfully logged in')
-          this.router.navigate['/my-vehicles'];
+          this.router.navigate['/vehicles'];
         },
         error: (error) => {
           this.isLoading = false;

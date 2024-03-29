@@ -1,0 +1,14 @@
+.add-button {
+  margin: auto;
+  max-width: fit-content;
+  margin-top: 20px;
+}
+
+.maintenance-list {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.services-container {
+    padding: 1rem
+  }

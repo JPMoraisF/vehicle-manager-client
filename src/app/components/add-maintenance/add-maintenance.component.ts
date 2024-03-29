@@ -122,7 +122,6 @@ export class AddMaintenanceComponent implements OnInit {
     }
     this.maintenanceItems.push({ ...newItem });
     this.table.renderRows();
-    console.log(this.maintenanceItems);
   }
 
   getTotalCost() {

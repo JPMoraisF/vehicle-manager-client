@@ -1,16 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MaintenanceDetailsComponent } from '../../components/maintenance-details/maintenance-details.component';
-import { MaintenanceService } from 'src/app/services/maintenance.service';
-import { Maintenance } from 'src/app/models/Maintenance';
-import { AddMaintenanceComponent } from '../../components/add-maintenance/add-maintenance.component';
-import { MatTable } from '@angular/material/table';
 import { ConfirmationDialogComponent } from '../../components/confirmation-dialog/confirmation-dialog.component';
-import { NotificationService } from 'src/app/services/notification.service';
 import { Vehicle } from 'src/app/models/Vehicle';
 import { GlobalSettingsService } from 'src/app/services/global-settings.service';
+import { NotificationService } from 'src/app/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -19,23 +14,19 @@ import { GlobalSettingsService } from 'src/app/services/global-settings.service'
 })
 export class VehicleDetailsComponent implements OnInit {
   isEdit: boolean = false;
-  vehicleDetails: Vehicle;
-  displayedColumns: string[] = ['maintenanceDate', 'kilometersDriven', 'notes', 'price', 'details'];
-  @ViewChild(MatTable) table: MatTable<Maintenance[]>;
   isMetric: boolean;
+  vehicleDetails: Vehicle;
 
   constructor(
     private router: Router,
     private vehicleService: VehicleService,
-    private maintenanceService: MaintenanceService,
     private dialog: MatDialog,
-    private notificationService: NotificationService,
-    private globalSettings: GlobalSettingsService
+    private globalSettings: GlobalSettingsService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
     this.vehicleDetails = this.vehicleService.vehicleSelected;
-    console.log(this.vehicleDetails.maintenanceList)
     this.isMetric = this.globalSettings.getMeasureSetting()
   }
 
@@ -43,7 +34,6 @@ export class VehicleDetailsComponent implements OnInit {
     this.vehicleService.deleteVehicle(this.vehicleDetails.id)
       .subscribe({
         next: (response) => {
-          console.log(response);
           this.notificationService.notify('Vehicle deleted');
           this.router.navigate(['/my-vehicles']);
         },
@@ -51,20 +41,6 @@ export class VehicleDetailsComponent implements OnInit {
           this.notificationService.notify('Error deleting vehicle');
           console.error(error);
         }
-      });
-  }
-
-  openMaintenanceDetailsDialog(maintenanceId: string): void {
-    this.maintenanceService.getMaintenanceDetails(this.vehicleDetails.id, maintenanceId)
-      .subscribe((maintenanceDetails: Maintenance) => {
-        console.log('Maintenance details', maintenanceDetails);
-        const dialogRef = this.dialog.open(MaintenanceDetailsComponent, {
-          width: '700px',
-          data: maintenanceDetails,
-        });
-
-        dialogRef.afterClosed().subscribe(result => {
-        });
       });
   }
 
@@ -92,7 +68,7 @@ export class VehicleDetailsComponent implements OnInit {
   openDeleteModal() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
-        headerMessage: `Are you sure you want to delete ${this.vehicleDetails.modelName} ?`,
+        headerMessage: `Are you sure you want to delete vehicle ${this.vehicleDetails.modelName} ?`,
         leftButton: {
           visible: true,
           color: '',
@@ -111,32 +87,6 @@ export class VehicleDetailsComponent implements OnInit {
         this.onDeleteVehicle();
       }
     });
-  }
-
-  addMaintenance(): void {
-    const dialogRef = this.dialog.open(AddMaintenanceComponent, {
-      width: '900px',
-      data: this.vehicleDetails.id
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.table.renderRows();
-    });
-  }
-
-  deleteMaintenance(maintenance: Maintenance): void {
-    this.maintenanceService.deleteMaintenance(this.vehicleDetails.id, maintenance.id).subscribe(
-      {
-        next: () => {
-          this.notificationService.notify(`Service done on ${maintenance.maintenanceDate} deleted successfully`);
-          this.vehicleDetails.maintenanceList = this.vehicleDetails.maintenanceList.filter(item => item.id !== maintenance.id);
-          this.table.renderRows();
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      }
-    );
   }
 
   updateDistance(value: number): void {
@@ -173,12 +123,5 @@ export class VehicleDetailsComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
-  }
-
-  getMaintenanceTotalCost(maintenanceItems: any) {
-    return maintenanceItems.reduce((sum, object) => {
-      const itemTotal = object.quantity * object.unitCost;
-      return sum + itemTotal;
-    }, 0);
   }
 }

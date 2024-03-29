@@ -6,10 +6,10 @@
 }
 
 form {
-  width: 100%; /* Garante que o formulário ocupa toda a largura disponível */
-  max-width: 70vw; /* Define uma largura máxima para o formulário */
-  padding: 20px; /* Adiciona algum espaço interno para melhor aparência */
-  box-sizing: border-box; /* Garante que as bordas e o preenchimento não afetem a largura total */
+  width: 100%;
+  max-width: 70vw;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 form mat-form-field {

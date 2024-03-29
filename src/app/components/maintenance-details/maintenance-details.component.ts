@@ -17,10 +17,10 @@ export class MaintenanceDetailsComponent {
   editMaintenance(id: string): void {
     this.maintenanceService.editMaintenance(id, this.data).subscribe(
       (response) => {
-        console.log('Manutenção editada com sucesso:', response);
+        console.log('Maintenance saved:', response);
       },
       (error) => {
-        console.error('Erro ao editar a manutenção:', error);
+        console.error('Error editing maintenance:', error);
       }
     );
   }

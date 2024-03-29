@@ -13,7 +13,7 @@ export class NotificationService {
   notify(message: string, duration: number = 4000){
     this.snackBar.open(message, '',{
       duration: duration,
-      verticalPosition: "top",
+      verticalPosition: "bottom",
       horizontalPosition: "center"
     });
   }

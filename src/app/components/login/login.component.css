@@ -18,6 +18,13 @@ mat-spinner {
 }
 
 .main-div {
-  width: 40%;
+  width: 50%;
   margin: auto;
+}
+
+@media (max-width: 600px) {
+  .main-div {
+    width: auto;
+    margin: auto;
+  }
 }

@@ -28,3 +28,7 @@ mat-spinner {
 .searchInput {
   width: 100%
 }
+
+@media (max-width: 600px) {
+  
+}

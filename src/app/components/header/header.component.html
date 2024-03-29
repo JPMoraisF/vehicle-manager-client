@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  <span>Vehicle Manager</span>
+  <span *ngIf="!isAuthenticated">Vehicle Manager</span>
   <span class="spacer"></span>
-  <button *ngIf="isAuthenticated" mat-button routerLink="/my-vehicles">My vehicles</button>
+  <button *ngIf="isAuthenticated" mat-button routerLink="/vehicles">My vehicles</button>
   <button *ngIf="isAuthenticated" mat-button routerLink="/add-vehicle">Add vehicle</button>
   <button mat-raised-button *ngIf="!isAuthenticated" routerLink="/login">Login</button>
 

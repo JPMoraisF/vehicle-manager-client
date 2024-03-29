@@ -32,7 +32,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { LoginComponent } from './components/login/login.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { ServiceListComponent } from './components/service-list/service-list.component';
 import {MatDividerModule} from '@angular/material/divider';
+import { LandingComponent } from './pages/landing/landing.component';
 
 
 @NgModule({
@@ -47,6 +49,8 @@ import {MatDividerModule} from '@angular/material/divider';
     ConfirmationDialogComponent,
     LoginComponent,
     UserDetailsComponent,
+    ServiceListComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,

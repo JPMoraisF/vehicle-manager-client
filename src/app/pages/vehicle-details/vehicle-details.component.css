@@ -1,5 +1,6 @@
 .details-container {
   display: flex;
+  padding: 2rem
 }
 
 .left-container {
@@ -24,12 +25,6 @@
   padding: 20px;
 }
 
-.add-button {
-  margin: auto;
-  max-width: fit-content;
-  margin-top: 20px;
-}
-
 .vehicle-header {
   display: flex;
   flex-direction: row;
@@ -40,7 +35,3 @@ mat-card {
   margin: 20px 0px;
 }
 
-.maintenance-list {
-  max-height: 400px;
-  overflow: auto;
-}

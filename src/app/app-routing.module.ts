@@ -7,15 +7,17 @@ import { AddMaintenanceComponent } from './components/add-maintenance/add-mainte
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './services/guards/auth.guard';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { LandingComponent } from './pages/landing/landing.component';
 
 const routes: Routes = [
-   { path: 'vehicle-details', component: VehicleDetailsComponent },
-  { path: 'my-vehicles', component: VehicleListComponent, canActivate : [AuthGuard] },
-  // { path: 'my-vehicles', component: VehicleListComponent},
+  {path: '', component: LandingComponent },
+  { path: 'vehicle-details', component: VehicleDetailsComponent},
+  { path: 'vehicles', component: VehicleListComponent, canActivate : [AuthGuard] },
   { path: 'add-vehicle', component: AddVehicleComponent, canActivate: [AuthGuard] },
-  { path: 'add-maintenance', component: AddMaintenanceComponent },
+  { path: 'add-maintenance', component: AddMaintenanceComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'user', component: UserDetailsComponent },
+  { path: 'user', component: UserDetailsComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/landing' }
 ];
 
 @NgModule({

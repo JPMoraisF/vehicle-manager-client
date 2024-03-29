@@ -38,7 +38,6 @@
     <mat-form-field>
       <mat-label>Color</mat-label>
       <input type="text" id="color" name="color" [(ngModel)]="newVehicle.color" required matInput >
-      <!-- <mat-error *ngIf="vehicleForm.controls.color.invalid">Please enter a color.</mat-error> -->
     </mat-form-field>
     <div class="image-container">
       <input type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" #fileInput>
