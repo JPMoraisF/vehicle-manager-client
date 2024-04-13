@@ -1,17 +1,10 @@
 <mat-card class="services-container">
   <h1>Services</h1>
   <div
-    *ngIf="
-      maintenanceList &&
-      maintenanceList.length > 0
-    "
+    *ngIf="maintenanceList && maintenanceList.length > 0"
     class="maintenance-list"
   >
-    <table
-      mat-table
-      [dataSource]="maintenanceList"
-      class="mat-elevation-z8"
-    >
+    <table mat-table [dataSource]="maintenanceList" class="mat-elevation-z8">
       <ng-container matColumnDef="maintenanceDate">
         <th mat-header-cell *matHeaderCellDef>Service date</th>
         <td mat-cell *matCellDef="let maintenance">
@@ -70,12 +63,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-  <p
-    *ngIf="
-      maintenanceList &&
-      maintenanceList.length == 0
-    "
-  >
+  <p *ngIf="maintenanceList && maintenanceList.length == 0">
     No maintenances done on this vehicle
   </p>
   <button

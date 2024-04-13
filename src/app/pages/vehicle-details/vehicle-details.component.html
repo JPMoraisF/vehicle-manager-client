@@ -1,15 +1,42 @@
-<div *ngIf="vehicleDetails" class="details-container">
-  <div class="left-container">
-    <h2>{{ vehicleDetails.modelName }} - Details</h2>
+<div 
+  *ngIf="vehicleDetails" 
+  class="details-container">
+  <div >
+
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ vehicleDetails.modelName }} - Details
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+    <mat-card>
+      <button mat-flat-button (click)="openDriverModal()">Show driver</button>
+    </mat-card>
+    
+    <mat-card>
+      <button mat-flat-button>Edit vehicle info</button>
+    </mat-card>
+    <mat-divider></mat-divider>
+    <mat-card>
+      <button mat-raised-button color="warn" (click)="openDeleteModal()">Delete vehicle</button>
+    </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+
+
+
+    
     <mat-card>
       <form (ngSubmit)="onSave()" #editForm="ngForm" class="form-container">
-        <div class="image-container">
+        <div >
           <input type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none" #fileInput>
 
-          <img *ngIf="vehicleDetails.image; else noImage" [src]="vehicleDetails.image" alt="Vehicle Image"
-            style="max-width: 100%; max-height: 700px;">
+          <img *ngIf="vehicleDetails.image; else noImage" [src]="vehicleDetails.image" alt="Vehicle Image" class="vehicle-image"
+            >
           <ng-template #noImage>
-            <img src="../../../assets/noPicture.png" alt="No Picture" style="max-width: 100%; max-height: 700px;">
+            <img src="../../../assets/noPicture.png" alt="No Picture" class="vehicle-image">
           </ng-template>
           <button mat-raised-button color="primary" (click)="fileInput.click()" type="button" *ngIf="isEdit">Select
             image</button>
@@ -73,20 +100,5 @@
     [isMetric]="isMetric"
     [maintenanceList]="vehicleDetails.maintenanceList"
     [vehicleId]="vehicleDetails.id"></app-service-list>
-  </div>
-
-  <div class="right-container ">
-    <h1 style="text-align: center;">Quick actions</h1>
-    <mat-card>
-      <button mat-flat-button (click)="openDriverModal()">Show driver</button>
-    </mat-card>
-    
-    <mat-card>
-      <button mat-flat-button>Edit vehicle info</button>
-    </mat-card>
-    <mat-divider></mat-divider>
-    <mat-card>
-      <button mat-raised-button color="warn" (click)="openDeleteModal()">Delete vehicle</button>
-    </mat-card>
   </div>
 </div>

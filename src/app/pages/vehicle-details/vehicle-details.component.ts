@@ -35,7 +35,7 @@ export class VehicleDetailsComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.notificationService.notify('Vehicle deleted');
-          this.router.navigate(['/my-vehicles']);
+          this.router.navigate(['/vehicles']);
         },
         error: (error) => {
           this.notificationService.notify('Error deleting vehicle');

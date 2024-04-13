@@ -76,7 +76,10 @@
 
     <p style="text-align: center;" *ngIf="maintenanceItems.length == 0">There are no items on this service</p>
 
-    <button mat-raised-button color="primary" type="submit" class="add-button">Add service</button>
+    <div class="button-row">
+      <button mat-stroked-button color="primary" (click)="this.dialogRef.close();" type="button">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Add service</button>
+    </div>
   </form>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
 

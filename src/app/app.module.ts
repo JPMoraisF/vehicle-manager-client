@@ -34,6 +34,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { LandingComponent } from './pages/landing/landing.component';
 
 
@@ -57,6 +58,7 @@ import { LandingComponent } from './pages/landing/landing.component';
     AppRoutingModule,
     MatSlideToggleModule,
     MatDividerModule,
+    MatExpansionModule,
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatTableModule,

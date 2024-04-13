@@ -40,7 +40,7 @@ export class AddVehicleComponent {
       {
         next: (response) => {
           this.snackBar.open('New vehicle successfully added!', '', { duration: 3000 });
-          this.router.navigate(['/my-vehicles/']);
+          this.router.navigate(['/vehicles']);
         },
         error: (error) => {
           console.error('Error adding vehicle:', error.error);
