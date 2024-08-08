@@ -121,6 +121,11 @@ export class AddMaintenanceComponent implements OnInit {
       unitCost: this.maintenanceForm.get('unitPrice')?.value,
     }
     this.maintenanceItems.push({ ...newItem });
+    this.maintenanceForm.patchValue({
+      description: null,
+      quantity: null,
+      unitPrice: null,
+    });
     this.table.renderRows();
   }
 
