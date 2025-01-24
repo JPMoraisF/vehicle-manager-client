@@ -1,16 +1,54 @@
 <div class="container">
+  <div class="main-text">
     <h1>The easiest way to manage your vehicles</h1>
-    <p>Leverage the power of one-place all-in-one management suite to track, manage and control your fleet.</p>
+    <p>
+      Leverage the power of one-place all-in-one management suite to track,
+      manage and control your fleet.
+    </p>
+    <div class="buttons">
+        <button mat-raised-button>Sign in</button>
+        <button mat-flat-button>Sign Up</button>
+        
+    </div>
+  </div>
 
-    <article>
-        <p>Easy of use</p>
-    </article>
+  <div class="article">
+    <mat-card class="example-card" appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>Easy to use</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{easyToUseText}}
+        </p>
+      </mat-card-content>
+      <mat-card-footer class="example-card-footer">
+      </mat-card-footer>
+    </mat-card>
 
-    <article>
-        <p>Real-time data</p>
-    </article>
-
-    <article>
-        <p>Integrated solution with your fleet</p>
-    </article>
+    <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Fleet Management</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            {{fleetManagement}}
+          </p>
+        </mat-card-content>
+        <mat-card-footer class="example-card-footer">
+        </mat-card-footer>
+      </mat-card>
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>Cost Center</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            {{costCenter}}
+          </p>
+        </mat-card-content>
+        <mat-card-footer class="example-card-footer">
+        </mat-card-footer>
+      </mat-card>
+  </div>
 </div>
